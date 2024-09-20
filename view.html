@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Datos</title>
+</head>
+<body style="background-color: #191919; color: white; text-align: center; font-family: Arial, sans-serif;">
+    <h1 style="color: #007BFF;">Datos de Western Union</h1>
+    <div id="dataDisplay"></div>
+
+    <script>
+        // Datos simulados asociados a cada nombre
+        const bankData = {
+            'John Doe': { monto: "$500", pais: "USA", banco: "Bank A", cuenta: "123456" },
+            'Jane Doe': { monto: "$300", pais: "Canadá", banco: "Bank B", cuenta: "789012" },
+            'Alice Smith': { monto: "$450", pais: "Reino Unido", banco: "Bank C", cuenta: "345678" }
+        };
+        window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const encodedName = params.get('name');
+    const timestamp = params.get('ts');
+    const name = decodeURIComponent(encodedName);
+
+    const now = new Date().toISOString();  // Obtiene la hora actual en UTC
+    const dataTime = new Date(timestamp);  // Convierte la marca de tiempo del enlace a un objeto Date en UTC
+    const diff = (Date.parse(now) - Date.parse(dataTime)) / (1000 * 60 * 60);  // Diferencia en horas
+
+    if (diff > 48) {
+        document.getElementById('dataDisplay').innerText = 'El dato bancario ya caducó.';
+    } else if (bankData[name]) {
+        const data = bankData[name];
+        document.getElementById('dataDisplay').innerHTML = mostrarDatos(name, data);
+    } else {
+        document.getElementById('dataDisplay').innerText = 'Datos no encontrados.';
+    }
+}
+
+function mostrarDatos(name, data) {
+    return `
+        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; background-color: #333;">
+            <p><strong>Nombre:</strong> ${name}</p>
+            <p><strong>Monto:</strong> ${data.monto}</p>
+            <p><strong>País:</strong> ${data.pais}</p>
+            <p><strong>Banco:</strong> ${data.banco}</p>
+            <p><strong>Cuenta:</strong> ${data.cuenta}</p>
+        </div>
+    `;
+}
+
+    </script>
+</body>
+</html>

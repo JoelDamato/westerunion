@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar enlace temporal</title>
+</head>
+<body style="background-color: #191919; color: white; text-align: center; font-family: Arial, sans-serif;">
+    <h1 style="color: #007BFF;">Generar enlace temporal con datos de Western Union</h1>
+
+    <label for="westerData">Selecciona los datos de Western Union:</label><br>
+    <select id="westerData">
+        <option value='John Doe'>John Doe</option>
+        <option value='Jane Doe'>Jane Doe</option>
+        <option value='Alice Smith'>Alice Smith</option>
+    </select><br><br>
+
+    <button onclick="generateLink()">Generar Enlace</button><br><br>
+
+    <input type="text" id="generatedLink" style="width: 80%; margin: 10px; padding: 8px; font-family: monospace;" readonly><br>
+    <button onclick="copyLink()">Copiar</button><br><br>
+    <button onclick="checkData()">Chequear Dato</button>
+
+    <script>
+     function generateLink() {
+    const selectedName = document.getElementById('westerData').value;
+    const timestamp = new Date().toISOString();  // Fecha y hora en UTC
+    const encodedName = encodeURIComponent(selectedName);
+    const link = `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/view.html?name=${encodedName}&ts=${timestamp}`;
+    document.getElementById('generatedLink').value = link;
+}
+
+        function copyLink() {
+            const linkInput = document.getElementById('generatedLink');
+            linkInput.select();
+            document.execCommand('copy');
+            alert('Enlace copiado al portapapeles');
+        }
+
+        function checkData() {
+            const link = document.getElementById('generatedLink').value;
+            if(link) {
+                window.open(link, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
