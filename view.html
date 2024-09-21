@@ -4,50 +4,222 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Datos</title>
+    <style>
+        body {
+            background-color: #191919;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        #dataDisplay {
+            margin-top: 20px;
+        }
+
+        .data-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #3339;
+            margin: 0 auto;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        p {
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .data-container {
+                padding: 15px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .data-container {
+                padding: 10px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
-<body style="background-color: #191919; color: white; text-align: center; font-family: Arial, sans-serif;">
-    <h1 style="color: #007BFF;">Datos de Western Union</h1>
+<body>
+    <h1>Datos de Western Union</h1>
     <div id="dataDisplay"></div>
 
     <script>
         // Datos simulados asociados a cada nombre
         const bankData = {
-            'John Doe': { monto: "$500", pais: "USA", banco: "Bank A", cuenta: "123456" },
-            'Jane Doe': { monto: "$300", pais: "Canadá", banco: "Bank B", cuenta: "789012" },
-            'Alice Smith': { monto: "$450", pais: "Reino Unido", banco: "Bank C", cuenta: "345678" }
-        };
-        window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const encodedName = params.get('name');
-    const timestamp = params.get('ts');
-    const name = decodeURIComponent(encodedName);
-
-    const now = new Date().toISOString();  // Obtiene la hora actual en UTC
-    const dataTime = new Date(timestamp);  // Convierte la marca de tiempo del enlace a un objeto Date en UTC
-    const diff = (Date.parse(now) - Date.parse(dataTime)) / (1000 * 60 * 60);  // Diferencia en horas
-
-    if (diff > 48) {
-        document.getElementById('dataDisplay').innerText = 'El dato bancario ya caducó.';
-    } else if (bankData[name]) {
-        const data = bankData[name];
-        document.getElementById('dataDisplay').innerHTML = mostrarDatos(name, data);
-    } else {
-        document.getElementById('dataDisplay').innerText = 'Datos no encontrados.';
+    'Alejandro Daniel Gil Berois': { 
+        nombre: "Alejandro Daniel", 
+        apellido: "Gil Berois", 
+        dni: "96.213.656", 
+        ciudad: "Buenos Aires", 
+        zona: "Palermo", 
+        pais: "Argentina", 
+        direccion: "Scalabrini Ortiz 3177", 
+        codigoPostal: "1425"
+    },
+    'Killian Astriel Arap': { 
+        nombre: "Killian Astriel", 
+        apellido: "Arap", 
+        dni: "39.486.767", 
+        ciudad: "Ciudad Autonoma de Buenos Aires", 
+        zona: "Palermo", 
+        pais: "Argentina", 
+        direccion: "Scalabrini Ortiz 3177", 
+        codigoPostal: "1425"
+    },
+    'Jorgelina Soraya Niz': { 
+        nombre: "Jorgelina Soraya", 
+        apellido: "Niz", 
+        dni: "21.977.018", 
+        ciudad: "Avellaneda", 
+        zona: "Wilde", 
+        provincia: "Buenos Aires", 
+        pais: "Argentina", 
+        direccion: "Guamini 5961", 
+        codigoPostal: "1875"
+    },
+    'Antonella Jesus Arap': { 
+        nombre: "Antonella Jesus", 
+        apellido: "Arap", 
+        dni: "41.308.427", 
+        ciudad: "Ciudad Autonoma de Buenos Aires", 
+        zona: "Palermo", 
+        pais: "Argentina", 
+        direccion: "Scalabrini Ortiz 3177", 
+        codigoPostal: "1425"
+    },
+    'Florencia Milena Franco Reccioppe': { 
+        nombre: "Florencia Milena", 
+        apellido: "Franco Reccioppe", 
+        dni: "50811865", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Pedro González 143", 
+        codigoPostal: "75000"
+    },
+    'Lourdes Estefania Vera Vespa': { 
+        nombre: "Lourdes Estefania", 
+        apellido: "Vera Vespa", 
+        dni: "4.455.980-3", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Don Bosco", 
+        codigoPostal: "75000"
+    },
+    'Juan Pablo Rivero Domínguez': { 
+        nombre: "Juan Pablo", 
+        apellido: "Rivero Domínguez", 
+        dni: "5.563.146-4", 
+        ciudad: "Mercedes Soriano", 
+        pais: "Uruguay", 
+        direccion: "19 de Abril y Rivas", 
+        codigoPostal: "75000"
+    },
+    'Iohan Manuel Salvador Domínguez': { 
+        nombre: "Iohan Manuel", 
+        apellido: "Salvador Domínguez", 
+        dni: "5.513.880-4", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Leila Tuya 428", 
+        codigoPostal: "75000"
+    },
+    'Carlos Alberto Chichizola': { 
+        nombre: "Carlos Alberto", 
+        apellido: "Chichizola", 
+        dni: "3.910.505-5", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Leila Tuya 428 bis", 
+        codigoPostal: "75000"
+    },
+    'María Mercedes Dominguez Torres': { 
+        nombre: "María Mercedes", 
+        apellido: "Dominguez Torres", 
+        dni: "2.686.454-1", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Leila Tuya 428 bis", 
+        codigoPostal: "75000"
+    },
+    'Andrea Natalia Domínguez Torres': { 
+        nombre: "Andrea Natalia", 
+        apellido: "Domínguez Torres", 
+        dni: "4.486.395-5", 
+        ciudad: "Mercedes", 
+        departamental: "Soriano", 
+        pais: "Uruguay", 
+        direccion: "Leila Tuya 428", 
+        codigoPostal: "75000"
     }
-}
+};
 
-function mostrarDatos(name, data) {
-    return `
-        <div style="border: 1px solid #ccc; padding: 20px; border-radius: 10px; background-color: #333;">
-            <p><strong>Nombre:</strong> ${name}</p>
-            <p><strong>Monto:</strong> ${data.monto}</p>
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const encodedName = params.get('name');
+            const timestamp = params.get('ts');
+            const name = decodeURIComponent(encodedName);
+
+            const now = new Date().toISOString();  // Obtiene la hora actual en UTC
+            const dataTime = new Date(timestamp);  // Convierte la marca de tiempo del enlace a un objeto Date en UTC
+            const diff = (Date.parse(now) - Date.parse(dataTime)) / (1000 * 60 * 60);  // Diferencia en horas
+
+            if (diff > 48) {
+                document.getElementById('dataDisplay').innerText = 'El dato bancario ya caducó.';
+            } else if (bankData[name]) {
+                const data = bankData[name];
+                document.getElementById('dataDisplay').innerHTML = mostrarDatos(name, data);
+            } else {
+                document.getElementById('dataDisplay').innerText = 'Datos no encontrados.';
+            }
+        }
+
+        function mostrarDatos(name, data) {
+            return `
+            <div class="data-container">
+                <p> 👉🏻 <strong>Para realizar el depósito debes dirigirte a un Western Unión y decir que vas a hacer un giro Wester internacional:</strong></p>            <p><strong>Nombre:</strong> ${data.nombre}</p>
+            <p><strong>Apellido:</strong> ${data.apellido}</p>
+            <p><strong>DNI o Cédula:</strong> ${data.dni}</p>
+            <p><strong>Ciudad:</strong> ${data.ciudad}</p>
+            <p><strong>Zona:</strong> ${data.zona}</p>
+            ${data.departamental ? `<p><strong>Departamental:</strong> ${data.departamental}</p>` : ""}
             <p><strong>País:</strong> ${data.pais}</p>
-            <p><strong>Banco:</strong> ${data.banco}</p>
-            <p><strong>Cuenta:</strong> ${data.cuenta}</p>
-        </div>
-    `;
-}
-
+            <p><strong>Dirección:</strong> ${data.direccion}</p>
+            <p><strong>Código Postal:</strong> ${data.codigoPostal}</p>
+            <p><strong>Cuando quede realizado el depósito enviarme comprobante así prosigo a tomarte los datos para ingresarte a la plataforma!</strong></p>        </div>
+            `;
+        }
     </script>
 </body>
 </html>

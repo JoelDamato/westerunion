@@ -4,31 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar enlace temporal</title>
+    <style>
+        body {
+            background-color: #191919;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            color: #007BFF;
+            margin: 10px 0;
+        }
+
+        select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 400px;
+            background-color: #f0f0f0;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 400px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #007BFF;
+        }
+
+        button:active {
+            background-color:  #007BFF;
+        }
+
+        textarea {
+            display: none; /* Oculto inicialmente */
+            width: 80%;
+            max-width: 400px;
+            margin: 10px;
+            padding: 8px;
+            font-family: monospace;
+            height: 100px;
+            resize: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            select, button, textarea {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<body style="background-color: #191919; color: white; text-align: center; font-family: Arial, sans-serif;">
-    <h1 style="color: #007BFF;">Generar enlace temporal con datos de Western Union</h1>
-
-    <label for="westerData">Selecciona los datos de Western Union:</label><br>
+<body>
+<h1 style="margin-bottom: 1px;">Generar enlace temporal</h1>
+<h2 style="margin-top: 0;">Western Union</h2>
+    
+    <label for="westerData">Selecciona los datos de Western Union:</label>
     <select id="westerData">
-        <option value='John Doe'>John Doe</option>
-        <option value='Jane Doe'>Jane Doe</option>
-        <option value='Alice Smith'>Alice Smith</option>
-    </select><br><br>
+        <option value="Killian Astriel Arap">Killian Arap</option>
+        <option value="Jorgelina Soraya Niz">Jorgelina Niz</option>
+        <option value="Antonella Jesus Arap">Antonella  Arap</option>
+        <option value="Alejandro Daniel Gil Berois">Alejandro Gil</option>
+        <option value="Florencia Milena Franco Reccioppe">Florencia Reccioppe</option>
+        <option value="Lourdes Estefania Vera Vespa">Lourdes  Vespa</option>
+        <option value="Juan Pablo Rivero Domínguez">Juan Pablo Rivero </option>
+        <option value="Iohan Manuel Salvador Domínguez">Iohan Salvador </option>
+        <option value="Carlos Alberto Chichizola">Carlos  Chichizola</option>
+        <option value="María Mercedes Dominguez Torres">María Dominguez </option>
+        <option value="Andrea Natalia Domínguez Torres">Andrea  Domínguez </option>
+    </select>
+    
 
-    <button onclick="generateLink()">Generar Enlace</button><br><br>
+    <button onclick="generateLink()">Generar Enlace</button>
 
-    <input type="text" id="generatedLink" style="width: 80%; margin: 10px; padding: 8px; font-family: monospace;" readonly><br>
-    <button onclick="copyLink()">Copiar</button><br><br>
-    <button onclick="checkData()">Chequear Dato</button>
+    <!-- El textarea está oculto hasta que se genera un enlace -->
+    <textarea id="generatedLink" readonly></textarea>
+
+    <button id="copyButton" style="display: none;" onclick="copyLink()">Copiar</button>
+    <button id="checkButton" style="display: none;" onclick="checkData()">Chequear Dato</button>
 
     <script>
-     function generateLink() {
-    const selectedName = document.getElementById('westerData').value;
-    const timestamp = new Date().toISOString();  // Fecha y hora en UTC
-    const encodedName = encodeURIComponent(selectedName);
-    const link = `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/view.html?name=${encodedName}&ts=${timestamp}`;
-    document.getElementById('generatedLink').value = link;
-}
+        let generatedLinkOnly = ''; // Para almacenar solo el link generado
+
+        function generateLink() {
+            const selectedName = document.getElementById('westerData').value;
+            const timestamp = new Date().toISOString();  // Fecha y hora en UTC
+            const encodedName = encodeURIComponent(selectedName);
+            const link = `${window.location.origin}${window.location.pathname.replace(/\/[^\/]*$/, '')}/view.html?name=${encodedName}&ts=${timestamp}`;
+            
+            // Guardar solo el link para usar en el botón "Chequear Dato"
+            generatedLinkOnly = link;
+            
+            const message = `💸 *Datos de Western*:\n${link}\n\nBro, te dejo los datos`;
+
+            // Mostrar el textarea y botones
+            document.getElementById('generatedLink').value = message;
+            document.getElementById('generatedLink').style.display = 'block'; // Mostrar textarea
+            document.getElementById('copyButton').style.display = 'block'; // Mostrar botón copiar
+            document.getElementById('checkButton').style.display = 'block'; // Mostrar botón chequear
+        }
 
         function copyLink() {
             const linkInput = document.getElementById('generatedLink');
@@ -38,9 +135,9 @@
         }
 
         function checkData() {
-            const link = document.getElementById('generatedLink').value;
-            if(link) {
-                window.open(link, '_blank');
+            // Usar solo el link almacenado y abrirlo
+            if(generatedLinkOnly) {
+                window.open(generatedLinkOnly, '_blank');
             }
         }
     </script>
