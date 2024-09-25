@@ -82,7 +82,7 @@
 <h1 style="margin-bottom: 1px;">Generar enlace temporal</h1>
 <h2 style="margin-top: 0;">Western Union</h2>
     
-    <label for="westerData">Selecciona los datos de Western Union:</label>
+    <label for="westerData" style="margin-bottom: 2px;" >Selecciona los datos de Western Union:</label>
     <select id="westerData">
         <option value="Killian Astriel Arap">Killian Arap</option>
         <option value="Jorgelina Soraya Niz">Jorgelina Niz</option>
@@ -95,10 +95,12 @@
         <option value="Carlos Alberto Chichizola">Carlos  Chichizola</option>
         <option value="María Mercedes Dominguez Torres">María Dominguez </option>
         <option value="Andrea Natalia Domínguez Torres">Andrea  Domínguez </option>
+        <option value="Karina Gabriela Paz">Karina Paz </option>
+        
     </select>
     
 
-    <button onclick="generateLink()">Generar Enlace</button>
+    <button style="margin-top: 0;" onclick="generateLink()">Generar Enlace</button>
 
     <!-- El textarea está oculto hasta que se genera un enlace -->
     <textarea id="generatedLink" readonly></textarea>
