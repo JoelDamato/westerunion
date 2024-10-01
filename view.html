@@ -72,7 +72,7 @@
     <script>
         // Datos simulados asociados a cada nombre
         const bankData = {
-    'Alejandro Daniel Gil Berois': { 
+    'Western Alejandro Gil': { 
         nombre: "Alejandro Daniel", 
         apellido: "Gil Berois", 
         dni: "96.213.656", 
@@ -82,7 +82,7 @@
         direccion: "Scalabrini Ortiz 3177", 
         codigoPostal: "1425"
     },
-    'Killian Astriel Arap': { 
+    'Western Killian Arap': { 
         nombre: "Killian Astriel", 
         apellido: "Arap", 
         dni: "39.486.767", 
@@ -103,7 +103,7 @@
         direccion: "Guamini 5961", 
         codigoPostal: "1875"
     },
-    'Antonella Jesus Arap': { 
+    'Western Antonella Arap': { 
         nombre: "Antonella Jesus", 
         apellido: "Arap", 
         dni: "41.308.427", 
@@ -113,7 +113,7 @@
         direccion: "Scalabrini Ortiz 3177", 
         codigoPostal: "1425"
     },
-    'Florencia Milena Franco Reccioppe': { 
+    'Western Florencia Franco': { 
         nombre: "Florencia Milena", 
         apellido: "Franco Reccioppe", 
         dni: "50811865", 
@@ -123,7 +123,7 @@
         direccion: "Pedro González 143", 
         codigoPostal: "75000"
     },
-    'Lourdes Estefania Vera Vespa': { 
+    'Western Lourdes Vera': { 
         nombre: "Lourdes Estefania", 
         apellido: "Vera Vespa", 
         dni: "4.455.980-3", 
@@ -133,7 +133,7 @@
         direccion: "Don Bosco", 
         codigoPostal: "75000"
     },
-    'Juan Pablo Rivero Domínguez': { 
+    'Western Juan Pablo Rivero': { 
         nombre: "Juan Pablo", 
         apellido: "Rivero Domínguez", 
         dni: "5.563.146-4", 
@@ -142,7 +142,7 @@
         direccion: "19 de Abril y Rivas", 
         codigoPostal: "75000"
     },
-    'Iohan Manuel Salvador Domínguez': { 
+    'Western Iohan Salvador': { 
         nombre: "Iohan Manuel", 
         apellido: "Salvador Domínguez", 
         dni: "5.513.880-4", 
@@ -152,7 +152,7 @@
         direccion: "Leila Tuya 428", 
         codigoPostal: "75000"
     },
-    'Carlos Alberto Chichizola': { 
+    'Western Carlos Chichizola': { 
         nombre: "Carlos Alberto", 
         apellido: "Chichizola", 
         dni: "3.910.505-5", 
@@ -162,7 +162,7 @@
         direccion: "Leila Tuya 428 bis", 
         codigoPostal: "75000"
     },
-    'María Mercedes Dominguez Torres': { 
+    'Western María Domínguez': { 
         nombre: "María Mercedes", 
         apellido: "Dominguez Torres", 
         dni: "2.686.454-1", 
@@ -172,7 +172,7 @@
         direccion: "Leila Tuya 428 bis", 
         codigoPostal: "75000"
     },
-    'Andrea Natalia Domínguez Torres': { 
+    'Western Andrea Domínguez': { 
         nombre: "Andrea Natalia", 
         apellido: "Domínguez Torres", 
         dni: "4.486.395-5", 
@@ -182,7 +182,7 @@
         direccion: "Leila Tuya 428", 
         codigoPostal: "75000"
     },
-    'Karina Gabriela Paz': { 
+    'Western Karina Paz': { 
         nombre: "Karina Gabriela", 
         apellido: "Paz", 
         dni: "5.071.230", 
@@ -222,7 +222,7 @@
             <p><strong>Apellido:</strong> ${data.apellido}</p>
             <p><strong>DNI o Cédula:</strong> ${data.dni}</p>
             <p><strong>Ciudad:</strong> ${data.ciudad}</p>
-            <p><strong>Zona:</strong> ${data.zona}</p>
+            ${data.zona ? `<p><strong>Zona:</strong> ${data.zona}</p>` : ""}
             ${data.departamental ? `<p><strong>Departamental:</strong> ${data.departamental}</p>` : ""}
             <p><strong>País:</strong> ${data.pais}</p>
             <p><strong>Dirección:</strong> ${data.direccion}</p>

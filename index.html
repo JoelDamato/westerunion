@@ -49,11 +49,11 @@
         }
 
         button:hover {
-            background-color: #007BFF;
+            background-color: #0056b3;
         }
 
         button:active {
-            background-color:  #007BFF;
+            background-color:  #00408d;
         }
 
         textarea {
@@ -79,26 +79,19 @@
     </style>
 </head>
 <body>
-<h1 style="margin-bottom: 1px;">Generar enlace temporal</h1>
+<h1 style="margin-bottom: 10px;">Generar enlace temporal</h1>
 <h2 style="margin-top: 0;">Western Union</h2>
-    
-    <label for="westerData" style="margin-bottom: 2px;" >Selecciona los datos de Western Union:</label>
-    <select id="westerData">
-        <option value="Killian Astriel Arap">Killian Arap</option>
-        <option value="Jorgelina Soraya Niz">Jorgelina Niz</option>
-        <option value="Antonella Jesus Arap">Antonella  Arap</option>
-        <option value="Alejandro Daniel Gil Berois">Alejandro Gil</option>
-        <option value="Florencia Milena Franco Reccioppe">Florencia Reccioppe</option>
-        <option value="Lourdes Estefania Vera Vespa">Lourdes  Vespa</option>
-        <option value="Juan Pablo Rivero Domínguez">Juan Pablo Rivero </option>
-        <option value="Iohan Manuel Salvador Domínguez">Iohan Salvador </option>
-        <option value="Carlos Alberto Chichizola">Carlos  Chichizola</option>
-        <option value="María Mercedes Dominguez Torres">María Dominguez </option>
-        <option value="Andrea Natalia Domínguez Torres">Andrea  Domínguez </option>
-        <option value="Karina Gabriela Paz">Karina Paz </option>
-        
+
+    <!-- Select para elegir la nacionalidad -->
+    <label for="filterNationality">Filtrar por montos:</label>
+    <select id="filterNationality">
+        <option value="Uruguay">Mas de 100us</option>
+        <option value="Argentina">Menos de 100us</option>
     </select>
-    
+
+    <!-- Select para mostrar los resultados filtrados -->
+    <label for="westerData" style="margin-bottom: 2px;">Selecciona los datos de Western Union:</label>
+    <select id="westerData"></select>
 
     <button style="margin-top: 0;" onclick="generateLink()">Generar Enlace</button>
 
@@ -110,7 +103,57 @@
 
     <script>
         let generatedLinkOnly = ''; // Para almacenar solo el link generado
+        let notionData = []; // Para almacenar los datos de la API
 
+        // Hacer la petición al backend cuando se cargue la página
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchDataAndUpdateSelect(); // Primera carga de datos
+            setInterval(fetchDataAndUpdateSelect, 60000); // Polling cada 60 segundos
+
+            // Evento cuando se cambia el select de nacionalidad
+            document.getElementById('filterNationality').addEventListener('change', function () {
+                updateSelect(this.value); // Actualizar el select según la nacionalidad seleccionada
+            });
+        });
+
+        function fetchDataAndUpdateSelect() {
+            fetch('https://wester-back.onrender.com/notion')
+            .then(response => response.json())
+            .then(data => {
+                notionData = data; // Guardar los datos obtenidos del backend
+                const nationality = document.getElementById('filterNationality').value;
+                updateSelect(nationality); // Actualizar el select con la nacionalidad seleccionada
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+        }
+
+        // Función para filtrar los datos según la nacionalidad seleccionada
+        function updateSelect(nationality) {
+            const select = document.getElementById('westerData');
+            select.innerHTML = ''; // Limpiar el select antes de llenarlo
+
+            const filteredData = notionData.filter(item => item.nacionalidad === nationality);
+
+            // Mapear los datos filtrados en el select
+            filteredData.forEach(item => {
+                const option = document.createElement('option');
+                // Mostrar el nombre y la cantidad disponible entre paréntesis
+                option.text = `${item.bancos} (${item.estadoDeDatos})`;
+                option.value = item.bancos;
+                select.appendChild(option);
+            });
+
+            // Si no hay datos, mostrar una opción que lo indique
+            if (filteredData.length === 0) {
+                const noDataOption = document.createElement('option');
+                noDataOption.text = 'No hay datos disponibles';
+                select.appendChild(noDataOption);
+            }
+        }
+
+        // Función para generar un enlace temporal
         function generateLink() {
             const selectedName = document.getElementById('westerData').value;
             const timestamp = new Date().toISOString();  // Fecha y hora en UTC
@@ -129,6 +172,7 @@
             document.getElementById('checkButton').style.display = 'block'; // Mostrar botón chequear
         }
 
+        // Función para copiar el enlace generado
         function copyLink() {
             const linkInput = document.getElementById('generatedLink');
             linkInput.select();
@@ -136,9 +180,10 @@
             alert('Enlace copiado al portapapeles');
         }
 
+        // Función para chequear el dato usando el enlace generado
         function checkData() {
             // Usar solo el link almacenado y abrirlo
-            if(generatedLinkOnly) {
+            if (generatedLinkOnly) {
                 window.open(generatedLinkOnly, '_blank');
             }
         }
