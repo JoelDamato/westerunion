@@ -222,7 +222,7 @@
             <p><strong>Apellido:</strong> ${data.apellido}</p>
             <p><strong>DNI o Cédula:</strong> ${data.dni}</p>
             <p><strong>Ciudad:</strong> ${data.ciudad}</p>
-            <p><strong>Zona:</strong> ${data.zona}</p>
+            ${data.zona ? `<p><strong>Zona:</strong> ${data.zona}</p> `: ""}
             ${data.departamental ? `<p><strong>Departamental:</strong> ${data.departamental}</p>` : ""}
             <p><strong>País:</strong> ${data.pais}</p>
             <p><strong>Dirección:</strong> ${data.direccion}</p>

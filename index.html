@@ -81,24 +81,19 @@
 <body>
 <h1 style="margin-bottom: 1px;">Generar enlace temporal</h1>
 <h2 style="margin-top: 0;">Western Union</h2>
-    
-    <label for="westerData" style="margin-bottom: 2px;" >Selecciona los datos de Western Union:</label>
-    <select id="westerData">
-        <option value="Killian Astriel Arap">Killian Arap</option>
-        <option value="Jorgelina Soraya Niz">Jorgelina Niz</option>
-        <option value="Antonella Jesus Arap">Antonella  Arap</option>
-        <option value="Alejandro Daniel Gil Berois">Alejandro Gil</option>
-        <option value="Florencia Milena Franco Reccioppe">Florencia Reccioppe</option>
-        <option value="Lourdes Estefania Vera Vespa">Lourdes  Vespa</option>
-        <option value="Juan Pablo Rivero Domínguez">Juan Pablo Rivero </option>
-        <option value="Iohan Manuel Salvador Domínguez">Iohan Salvador </option>
-        <option value="Carlos Alberto Chichizola">Carlos  Chichizola</option>
-        <option value="María Mercedes Dominguez Torres">María Dominguez </option>
-        <option value="Andrea Natalia Domínguez Torres">Andrea  Domínguez </option>
-        <option value="Karina Gabriela Paz">Karina Paz </option>
-        
+
+    <!-- Nuevo select para elegir nacionalidad -->
+    <label for="nationality" style="margin-bottom: 2px;">Selecciona monto:</label>
+    <select id="nationality" onchange="filterByNationality()">
+        <option value="">-- Monto --</option>
+        <option value="argentina">Menos de 100 usd</option>
+        <option value="uruguay">Mas de 100 usd</option>
     </select>
-    
+
+    <label for="westerData" style="margin-bottom: 2px;">Selecciona los datos de Western Union:</label>
+    <select id="westerData" disabled>
+        <option value="">-- Selecciona monto primero --</option>
+    </select>
 
     <button style="margin-top: 0;" onclick="generateLink()">Generar Enlace</button>
 
@@ -110,6 +105,45 @@
 
     <script>
         let generatedLinkOnly = ''; // Para almacenar solo el link generado
+
+        const data = {
+            argentina: [
+                { name: 'Killian Astriel Arap', value: 'Killian Astriel Arap' },
+                { name: 'Alejandro Daniel Gil Berois', value: 'Alejandro Daniel Gil Berois' },
+                { name: 'Antonella Jesus Arap', value: 'Antonella Jesus Arap' },
+                { name: 'Karina Gabriela Paz', value: 'Karina Gabriela Paz' }
+            ],
+            uruguay: [
+                { name: 'Jorgelina Soraya Niz', value: 'Jorgelina Soraya Niz' },
+                { name: 'Florencia Milena Franco Reccioppe', value: 'Florencia Milena Franco Reccioppe' },
+                { name: 'Lourdes Estefania Vera Vespa', value: 'Lourdes Estefania Vera Vespa' },
+                { name: 'Juan Pablo Rivero Domínguez', value: 'Juan Pablo Rivero Domínguez' },
+                { name: 'Iohan Manuel Salvador Domínguez', value: 'Iohan Manuel Salvador Domínguez' },
+                { name: 'Carlos Alberto Chichizola', value: 'Carlos Alberto Chichizola' },
+                { name: 'María Mercedes Dominguez Torres', value: 'María Mercedes Dominguez Torres' },
+                { name: 'Andrea Natalia Domínguez Torres', value: 'Andrea Natalia Domínguez Torres' }
+            ]
+        };
+
+        function filterByNationality() {
+            const nationality = document.getElementById('nationality').value;
+            const westerData = document.getElementById('westerData');
+            westerData.innerHTML = ''; // Limpiar las opciones
+
+            if (nationality) {
+                westerData.disabled = false;
+                const options = data[nationality];
+                options.forEach(person => {
+                    const option = document.createElement('option');
+                    option.value = person.value;
+                    option.textContent = person.name;
+                    westerData.appendChild(option);
+                });
+            } else {
+                westerData.disabled = true;
+                westerData.innerHTML = '<option value="">-- Selecciona un país primero --</option>';
+            }
+        }
 
         function generateLink() {
             const selectedName = document.getElementById('westerData').value;
