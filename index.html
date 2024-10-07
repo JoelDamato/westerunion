@@ -82,16 +82,18 @@
 <h1 style="margin-bottom: 10px;">Generar enlace temporal</h1>
 <h2 style="margin-top: 0;">Western Union</h2>
 
-    <!-- Select para elegir la nacionalidad -->
-    <label for="filterNationality">Filtrar por montos:</label>
-    <select id="filterNationality">
-        <option value="Uruguay">Mas de 100us</option>
-        <option value="Argentina">Menos de 100us</option>
+    <!-- Nuevo select para elegir nacionalidad -->
+    <label for="nationality" style="margin-bottom: 2px;">Selecciona monto:</label>
+    <select id="nationality" onchange="filterByNationality()">
+        <option value="">-- Monto --</option>
+        <option value="argentina">Menos de 100 usd</option>
+        <option value="uruguay">Mas de 100 usd</option>
     </select>
 
-    <!-- Select para mostrar los resultados filtrados -->
     <label for="westerData" style="margin-bottom: 2px;">Selecciona los datos de Western Union:</label>
-    <select id="westerData"></select>
+    <select id="westerData" disabled>
+        <option value="">-- Selecciona monto primero --</option>
+    </select>
 
     <button style="margin-top: 0;" onclick="generateLink()">Generar Enlace</button>
 
@@ -105,55 +107,45 @@
         let generatedLinkOnly = ''; // Para almacenar solo el link generado
         let notionData = []; // Para almacenar los datos de la API
 
-        // Hacer la petición al backend cuando se cargue la página
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchDataAndUpdateSelect(); // Primera carga de datos
-            setInterval(fetchDataAndUpdateSelect, 60000); // Polling cada 60 segundos
+        const data = {
+            argentina: [
+                { name: 'Killian Astriel Arap', value: 'Killian Astriel Arap' },
+                { name: 'Alejandro Daniel Gil Berois', value: 'Alejandro Daniel Gil Berois' },
+                { name: 'Antonella Jesus Arap', value: 'Antonella Jesus Arap' },
+                { name: 'Karina Gabriela Paz', value: 'Karina Gabriela Paz' }
+            ],
+            uruguay: [
+                { name: 'Jorgelina Soraya Niz', value: 'Jorgelina Soraya Niz' },
+                { name: 'Florencia Milena Franco Reccioppe', value: 'Florencia Milena Franco Reccioppe' },
+                { name: 'Lourdes Estefania Vera Vespa', value: 'Lourdes Estefania Vera Vespa' },
+                { name: 'Juan Pablo Rivero Domínguez', value: 'Juan Pablo Rivero Domínguez' },
+                { name: 'Iohan Manuel Salvador Domínguez', value: 'Iohan Manuel Salvador Domínguez' },
+                { name: 'Carlos Alberto Chichizola', value: 'Carlos Alberto Chichizola' },
+                { name: 'María Mercedes Dominguez Torres', value: 'María Mercedes Dominguez Torres' },
+                { name: 'Andrea Natalia Domínguez Torres', value: 'Andrea Natalia Domínguez Torres' }
+            ]
+        };
 
-            // Evento cuando se cambia el select de nacionalidad
-            document.getElementById('filterNationality').addEventListener('change', function () {
-                updateSelect(this.value); // Actualizar el select según la nacionalidad seleccionada
-            });
-        });
+        function filterByNationality() {
+            const nationality = document.getElementById('nationality').value;
+            const westerData = document.getElementById('westerData');
+            westerData.innerHTML = ''; // Limpiar las opciones
 
-        function fetchDataAndUpdateSelect() {
-            fetch('https://wester-back.onrender.com/notion')
-            .then(response => response.json())
-            .then(data => {
-                notionData = data; // Guardar los datos obtenidos del backend
-                const nationality = document.getElementById('filterNationality').value;
-                updateSelect(nationality); // Actualizar el select con la nacionalidad seleccionada
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-        }
-
-        // Función para filtrar los datos según la nacionalidad seleccionada
-        function updateSelect(nationality) {
-            const select = document.getElementById('westerData');
-            select.innerHTML = ''; // Limpiar el select antes de llenarlo
-
-            const filteredData = notionData.filter(item => item.nacionalidad === nationality);
-
-            // Mapear los datos filtrados en el select
-            filteredData.forEach(item => {
-                const option = document.createElement('option');
-                // Mostrar el nombre y la cantidad disponible entre paréntesis
-                option.text = `${item.bancos} (${item.estadoDeDatos})`;
-                option.value = item.bancos;
-                select.appendChild(option);
-            });
-
-            // Si no hay datos, mostrar una opción que lo indique
-            if (filteredData.length === 0) {
-                const noDataOption = document.createElement('option');
-                noDataOption.text = 'No hay datos disponibles';
-                select.appendChild(noDataOption);
+            if (nationality) {
+                westerData.disabled = false;
+                const options = data[nationality];
+                options.forEach(person => {
+                    const option = document.createElement('option');
+                    option.value = person.value;
+                    option.textContent = person.name;
+                    westerData.appendChild(option);
+                });
+            } else {
+                westerData.disabled = true;
+                westerData.innerHTML = '<option value="">-- Selecciona un país primero --</option>';
             }
         }
 
-        // Función para generar un enlace temporal
         function generateLink() {
             const selectedName = document.getElementById('westerData').value;
             const timestamp = new Date().toISOString();  // Fecha y hora en UTC
