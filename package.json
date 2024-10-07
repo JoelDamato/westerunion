@@ -1,0 +1,14 @@
+{
+  "name": "western-link",
+  "version": "1.0.0",
+  "description": "Descripción breve de tu proyecto",
+  "main": "index.jshtml", 
+  "scripts": {
+    "start": "npm run "  
+  },
+  "author": "Jota",
+  "license": "ISC",
+  "dependencies": {
+
+  }
+}
