@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="icon" type="image/x-icon" href="https://companieslogo.com/img/orig/WU-1a8f4ddc.png">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar enlace temporal</title>
@@ -93,6 +92,11 @@
             color: #000000;
             display: none;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .limit-exceeded {
+            background-color: #ffcccc !important; /* Fondo rojo para límite excedido */
+            color: #ff0000;
         }
 
         textarea {
@@ -189,9 +193,9 @@
             // Filtrar los datos según el monto seleccionado
             let filteredData;
             if (amount === 'less') {
-                filteredData = data.filter(item => item.properties.Nacionalidad.select?.name === 'Argentina' && item.properties['Ingreso total'].rollup.number < 100);
+                filteredData = data.filter(item => item.pais === 'Argentina');
             } else {
-                filteredData = data.filter(item => item.properties.Nacionalidad.select?.name !== 'Argentina');
+                filteredData = data.filter(item => item.pais !== 'Argentina');
             }
 
             // Llenar el select con los datos filtrados
@@ -201,8 +205,14 @@
                 westerDataLabel.style.display = 'block'; // Mostrar el label
                 filteredData.forEach(item => {
                     const option = document.createElement('option');
-                    option.value = item.properties['Bancos N'].title[0].plain_text;
-                    option.textContent = `${item.properties['Bancos N'].title[0].plain_text} - ${item.properties['Estado Datos'].formula.string}`;
+                    option.value = item.nombreBanco;
+                    option.textContent = `${item.nombreBanco} - ${item.estadoPagos}`;
+
+                    // Aplicar estilo de fondo rojo si el estado es "Límite Superado"
+                    if (item.estadoPagos.includes("Límite Superado")) {
+                        option.classList.add('limit-exceeded');
+                    }
+
                     westerData.appendChild(option);
                 });
                 generateLinkButton.style.display = 'block'; // Mostrar botón Generar Enlace
@@ -233,10 +243,7 @@
         // Guardar solo el link para usar en el botón "Chequear Dato"
         generatedLinkOnly = link;
         
-        const message = `💸 *Datos de Western*:
- ${link} 
-
-*Importante*: ¡Solo necesitas tu identificación para completar el depósito!`;
+        const message = `💸 *Datos de Western*:\n${link}\n\n*Importante*: ¡Solo necesitas tu identificación para completar el depósito!`;
 
         // Mostrar el textarea y botones
         document.getElementById('generatedLink').value = message;
